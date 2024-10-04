@@ -1,4 +1,4 @@
-import { View, Text, Platform } from 'react-native'
+import { View, Text, Platform, FlatList } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import React from 'react' 
 
