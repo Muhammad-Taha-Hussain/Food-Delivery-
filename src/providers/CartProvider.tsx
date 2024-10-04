@@ -1,42 +1,64 @@
-
-
-
 import { CartItem, Product } from "@/types";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
-
+import { randomUUID } from "expo-crypto";
 
 type CartType = {
-    items: CartItem[];
-    addItem: (product: Product, size: CartItem['size']) => void;
-}
+  items: CartItem[];
+  addItem: (product: Product, size: CartItem["size"]) => void;
+  updateQantity: (itemId: string, amount: -1 | 1) => void;
+};
 
 const CartContext = createContext<CartType>({
-    items: [],
-    addItem: () => {},
+  items: [],
+  addItem: () => {},
+  updateQantity: () => {},
 });
 
-const CartProvider = ({children}: PropsWithChildren) => {
+const CartProvider = ({ children }: PropsWithChildren) => {
+  const [items, setItems] = useState<CartItem[]>([]);
 
-    const [items, setItems] = useState<CartItem[]>([]);
+  const addItem = (product: Product, size: CartItem["size"]) => {
+    // if alreadyin cart, incerment quantity
+    const existingItem = items.find( item => item.product === product && item.size === size)
 
-    const addItem = (product: Product, size: CartItem['size']) => {
-        const newCartItem: CartItem = { id: '1',
-            product,
-            product_id: product.id,
-            size,
-            quantity: 1
-        };
-        setItems([newCartItem, ...items]);
-        console.log(product, size);
+    if(existingItem) {
+        updateQantity(existingItem.id, 1);
+        return;
+    }
+    const newCartItem: CartItem = {
+      id: randomUUID(), //generate
+      product,
+      product_id: product.id,
+      size,
+      quantity: 1,
     };
+    setItems([newCartItem, ...items]);
+    console.log(product, size);
+  };
 
-    return (
-        <CartContext.Provider value={{ items, addItem}}>
-            {children}
-        </CartContext.Provider>
+  //update quantity
+  const updateQantity = (itemId: string, amount: -1 | 1) => {
+    setItems(
+      items
+      .map((item) =>
+        item.id !== itemId
+          ? item
+          : { ...item, quantity: item.quantity + amount }
+      )
+      .filter(
+        (item) => item.quantity > 0
+      )
     );
-}
+    console.log(itemId, amount);
+  };
+
+  return (
+    <CartContext.Provider value={{ items, addItem, updateQantity }}>
+      {children}
+    </CartContext.Provider>
+  );
+};
 
 export default CartProvider;
 
-export const useCart = () => useContext(CartContext)
+export const useCart = () => useContext(CartContext);
