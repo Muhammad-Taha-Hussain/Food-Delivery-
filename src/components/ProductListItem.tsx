@@ -1,24 +1,31 @@
 import { StyleSheet, Image, View, Text, Pressable } from "react-native";
-import { Link } from "expo-router";
+import { Link, useSegments } from "expo-router";
 import Colors from "@/constants/Colors";
 
 import { Product } from "@/types";
+
+export const defaultPizzaImage =
+  'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png';
 
 type ProductListItemProps = {
   product: Product;
 };
 
 const ProductListItem = ({ product }: ProductListItemProps) => {
+
+  const segments = useSegments();
+    
   return (
     
-    <Link href={`/(tabs)/menu/${product.id}`} asChild>
+    <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
     <Pressable style={styles.container}>
       <Image
         source={{
-          uri: product.image || "FoodOrderingsrcassetsimagesadaptive-icon.png",
+          uri: product.image || defaultPizzaImage,
         }}
         style={styles.image}
         resizeMode="contain"
+
       />
       <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.price}>$ {product.price}</Text>
