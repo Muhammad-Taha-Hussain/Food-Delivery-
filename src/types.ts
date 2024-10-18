@@ -12,6 +12,9 @@
 // export type Enums<T extends keyof Database['public']['Enums']> =
 //   Database['public']['Enums'][T];
 
+export type Tables<T> = {
+
+}
 export type Product = {
   id: number;
   image: string | null;
