@@ -1,22 +1,22 @@
-import { FontAwesome } from "@expo/vector-icons";
-import { Link, Stack } from "expo-router";
-import { Pressable } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import Colors from '@/constants/Colors';
+import { FontAwesome } from '@expo/vector-icons';
+import { Link, Stack } from 'expo-router';
+import { Pressable } from 'react-native';
 
 export default function MenuStack() {
   return (
-    <Stack screenOptions={{}}>
+    <Stack>
       <Stack.Screen
         name="index"
         options={{
-          title: "menu",
+          title: 'Menu',
           headerRight: () => (
             <Link href="/(admin)/menu/CreateProductScreen" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
                     name="plus-square-o"
-                    size={28}
+                    size={25}
                     color={Colors.light.tint}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
@@ -27,7 +27,7 @@ export default function MenuStack() {
         }}
       />
 
-      
+     
     </Stack>
   );
 }

@@ -1,52 +1,63 @@
-import { Image, StyleSheet, Text, View, Pressable } from "react-native";
-import React, { useState } from "react";
+import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native';
+import { defaultPizzaImage } from '@/components/ProductListItem';
+import { useState } from 'react';
+import Button from '@components/Button';
+import { useCart } from '@/providers/CartProvider';
+import { PizzaSize } from '@/types';
+import { FontAwesome } from '@expo/vector-icons';
+import Colors from '@/constants/Colors';
+import { useProduct } from '@/api/products';
+// import RemoteImage from '@/components/RemoteImage';
 
-import { PizzaSize, Product } from "@/types";
-import ProductListItem from "@/components/ProductListItem";
-import Button from "@/components/Button";
-import products from "@/assets/data/Products";
-import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import { useCart } from "@/providers/CartProvider";
-import { FontAwesome } from "@expo/vector-icons";
+const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL'];
 
-
-const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
-
-const ProductDetailScreen = () => {
-  const [selectedSize, setSelectedsize] = useState<PizzaSize>("M");
-  const { id } = useLocalSearchParams();
-  const router = useRouter();
+const ProductDetailsScreen = () => {
+  const { id: idString } = useLocalSearchParams();
+  const id = parseFloat(typeof idString === 'string' ? idString : idString[0]);
+  const { data: product, error, isLoading } = useProduct(id);
 
   const { addItem } = useCart();
 
-  const product = products.find((p) => p.id.toString() === id);
+  const router = useRouter();
+
+  const [selectedSize, setSelectedSize] = useState<PizzaSize>('M');
 
   const addToCart = () => {
-    if(!product) {
+    if (!product) {
       return;
     }
     addItem(product, selectedSize);
-    router.push('/cart')
+    router.push('/cart');
+  };
+
+  if (isLoading) {
+    return <ActivityIndicator />;
   }
 
-  if (!product) {
-    return <Text>Product not found</Text>;
+  if (error) {
+    return <Text>Failed to fetch products</Text>;
   }
 
   return (
     <View style={styles.container}>
-      
       <Stack.Screen
         options={{
-          title: "menu",
+          title: 'Menu',
           headerRight: () => (
             <Link href={`/(admin)/menu/CreateProductScreen?id=${id}`} asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
                     name="pencil"
-                    size={28}
+                    size={25}
                     color={Colors.light.tint}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
@@ -57,44 +68,39 @@ const ProductDetailScreen = () => {
         }}
       />
 
-
       <Stack.Screen options={{ title: product.name }} />
-      <Image
-        source={{
-          uri: product.image || "FoodOrderingsrcassetsimagesadaptive-icon.png",
-        }}
-        style={styles.image}
-      />
 
-      <Text style={styles.price}>${product.name}</Text>
+      {/* <RemoteImage
+        path={product?.image}
+        fallback={defaultPizzaImage}
+        style={styles.image}
+      /> */}
+
+      <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.price}>${product.price}</Text>
     </View>
   );
 };
 
-export default ProductDetailScreen;
-
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    padding: 10,
-    borderRadius: 20,
+    backgroundColor: 'white',
     flex: 1,
-    marginVertical: 10,
-    marginHorizontal: 10,
+    padding: 10,
   },
   image: {
-    width: "100%",
+    width: '100%',
     aspectRatio: 1,
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+    marginVertical: 10,
   },
   price: {
-    color: Colors.light.tint,
-    paddingHorizontal: 10,
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontWeight: '500',
   },
 });
+
+export default ProductDetailsScreen;

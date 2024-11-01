@@ -19,7 +19,6 @@ const supabaseUrl = "https://madgubgrgtibudchemol.supabase.co";
 const supabaseAnonKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hZGd1YmdyZ3RpYnVkY2hlbW9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkyMzgyMDQsImV4cCI6MjA0NDgxNDIwNH0.iObsoCnNodjFmds6eFJL1i5XVVD8u5YoiNF_hs8FlhI";
 
-console.log(supabaseUrl, supabaseAnonKey);
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {

@@ -1,26 +1,23 @@
-import { View, Text, FlatList } from 'react-native'
-import React from 'react'
-import orders from '@/assets/data/Orders'
-import OrderListItem from '@/components/OrderListItem'
+import { Text, FlatList, ActivityIndicator } from 'react-native';
+import OrderListItem from '@/components/OrderListItem';
+// import { useMyOrderList } from '@/api/orders';
+import orders from "@/assets/data/Orders"
 
+export default function OrdersScreen() {
+  // const { data: orders, isLoading, error } = useMyOrderList();
 
+  // if (isLoading) {
+  //   return <ActivityIndicator />;
+  // }
+  // if (error) {
+  //   return <Text>Failed to fetch</Text>;
+  // }
 
-const OrderScreen = () => {
   return (
-    <View>
-      <FlatList 
-          data={orders}
-          renderItem={ ( {item} ) => <OrderListItem order={item} /> }
-          numColumns={1}
-
-          
-          contentContainerStyle= {{ gap:10, padding: 10 }}
-          // columnWrapperStyle= {{ gap:10 }}
-          // refreshing= {refresh}
-          // onRefresh={setRefresh(true)}
-        />
-    </View>
-  )
+    <FlatList
+      data={orders}
+      renderItem={({ item }) => <OrderListItem order={item} />}
+      contentContainerStyle={{ gap: 10, padding: 10 }}
+    />
+  );
 }
-
-export default OrderScreen

@@ -8,9 +8,18 @@ import {
   useState,
 } from 'react';
 
+// Define the Profile interface according to your database structure
+interface Profile {
+  id: string;
+  username: string;
+  email: string;
+  group?: string; // Include optional fields if necessary
+  // Add other fields as needed
+}
+
 type AuthData = {
   session: Session | null;
-  profile: any;
+  profile: Profile | null;
   loading: boolean;
   isAdmin: boolean;
 };
@@ -24,7 +33,7 @@ const AuthContext = createContext<AuthData>({
 
 export default function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,27 +41,41 @@ export default function AuthProvider({ children }: PropsWithChildren) {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-
+      
       setSession(session);
 
       if (session) {
-        // fetch profile
-        const { data } = await supabase
+        // Fetch profile
+        const { data, error } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', session.user.id)
           .single();
-        setProfile(data || null);
+        
+        if (error) {
+          console.error('Error fetching profile:', error.message);
+          setProfile(null);
+        } else {
+          console.log(data);
+          
+          setProfile(data);
+        }
       }
 
       setLoading(false);
     };
 
     fetchSession();
-    supabase.auth.onAuthStateChange((_event, session) => {
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
   }, []);
+  
 
   return (
     <AuthContext.Provider
