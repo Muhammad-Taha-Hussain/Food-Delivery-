@@ -8,7 +8,7 @@ import Button from '@/components/Button';
 
 export default function CartScreen() {
 
-  const { items, total } = useCart();
+  const { items, total, checkout } = useCart();
   console.log(total);
   
   return (
@@ -21,7 +21,7 @@ export default function CartScreen() {
       />
       <Text style={{ marginTop: 20, fontSize: 20, fontWeight: '500' }}>Total : ${total}</Text>
       { items.length>0 && 
-      <Button text='Checkout' /> }
+      <Button onPress={checkout} text='Checkout' /> }
       
 
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />

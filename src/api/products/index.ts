@@ -1,3 +1,4 @@
+import { Tables } from '@/database.types';
 import { supabase } from '@/lib/supabase';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -36,7 +37,7 @@ export const useInsertProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    async mutationFn(data: any) {
+    async mutationFn(data: Tables<'products'>) {
       const { error, data: newProduct } = await supabase
         .from('products')
         .insert({
