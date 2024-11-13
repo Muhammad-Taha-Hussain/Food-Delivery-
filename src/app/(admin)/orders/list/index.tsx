@@ -27,10 +27,6 @@ const OrderScreen = () => {
           renderItem={ ( {item} ) => <OrderListItem order={item} /> }
           numColumns={1}
           contentContainerStyle= {{ gap:10, padding: 10 }}
-          
-          // columnWrapperStyle= {{ gap:10 }}
-          // refreshing= {refresh}
-          // onRefresh={setRefresh(true)}
         />
     </View>
   )

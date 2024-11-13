@@ -1,19 +1,19 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import React from 'react';
-import { Order, Tables } from '../types';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import dayjs from 'dayjs';
-import { Link, useSegments } from 'expo-router';
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import React, { useEffect } from "react";
+import { Order, Tables } from "../types";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
+import { Link, useSegments } from "expo-router";
+import { useUpdateOrderSubscription } from "@/api/orders/subscriptions";
 
 dayjs.extend(relativeTime);
 
 type OrderListItemProps = {
-  order: Tables<'orders'>;
+  order: Tables<"orders">;
 };
 
 const OrderListItem = ({ order }: OrderListItemProps) => {
   const segments = useSegments();
-
   return (
     <Link href={`/${segments[0]}/orders/${order.id}`} asChild>
       <Pressable style={styles.container}>
@@ -30,22 +30,22 @@ const OrderListItem = ({ order }: OrderListItemProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   title: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginVertical: 5,
   },
   time: {
-    color: 'gray',
+    color: "gray",
   },
   status: {
-    fontWeight: '500',
+    fontWeight: "500",
   },
 });
 

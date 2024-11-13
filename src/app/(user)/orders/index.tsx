@@ -1,6 +1,7 @@
 import { Text, FlatList, ActivityIndicator } from 'react-native';
 import OrderListItem from '@/components/OrderListItem';
 import { useMyOrderList } from '@/api/orders';
+import { useUpdateOrderSubscription } from '@/api/orders/subscriptions';
 
 export default function OrdersScreen() {
   const { data: orders, isLoading, error } = useMyOrderList();

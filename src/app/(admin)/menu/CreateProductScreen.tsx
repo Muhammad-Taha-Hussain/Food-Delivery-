@@ -1,31 +1,32 @@
-import Button from '@/components/Button';
-import { defaultPizzaImage } from '@/components/ProductListItem';
-import Colors from '@/constants/Colors';
-import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, Alert } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import Button from "@/components/Button";
+import { defaultPizzaImage } from "@/components/ProductListItem";
+import Colors from "@/constants/Colors";
+import { useEffect, useState } from "react";
+import { View, Text, StyleSheet, TextInput, Image, Alert } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import {
   useDeleteProduct,
   useInsertProduct,
   useProduct,
   useUpdateProduct,
-} from '@/api/products';
+} from "@/api/products";
 
-import * as FileSystem from 'expo-file-system';
-import { randomUUID } from 'expo-crypto';
-import { supabase } from '@/lib/supabase';
-import { decode } from 'base64-arraybuffer';
+import * as FileSystem from "expo-file-system";
+import { randomUUID } from "expo-crypto";
+import { supabase } from "@/lib/supabase";
+import { decode } from "base64-arraybuffer";
+import RemoteImage from "@/components/RemoteImage";
 
 const CreateProductScreen = () => {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [errors, setErrors] = useState('');
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [errors, setErrors] = useState("");
   const [image, setImage] = useState<string | null>(null);
 
   const { id: idString } = useLocalSearchParams();
   const id = parseFloat(
-    typeof idString === 'string' ? idString : idString?.[0]
+    typeof idString === "string" ? idString : idString?.[0]
   );
   const isUpdating = !!idString;
 
@@ -40,27 +41,26 @@ const CreateProductScreen = () => {
     if (updatingProduct) {
       setName(updatingProduct.name);
       setPrice(updatingProduct.price.toString());
-      setImage(updatingProduct.image);
     }
   }, [updatingProduct]);
 
   const resetFields = () => {
-    setName('');
-    setPrice('');
+    setName("");
+    setPrice("");
   };
 
   const validateInput = () => {
-    setErrors('');
+    setErrors("");
     if (!name) {
-      setErrors('Name is required');
+      setErrors("Name is required");
       return false;
     }
     if (!price) {
-      setErrors('Price is required');
+      setErrors("Price is required");
       return false;
     }
     if (isNaN(parseFloat(price))) {
-      setErrors('Price is not a number');
+      setErrors("Price is not a number");
       return false;
     }
     return true;
@@ -130,37 +130,37 @@ const CreateProductScreen = () => {
     deleteProduct(id, {
       onSuccess: () => {
         resetFields();
-        router.replace('/(admin)');
+        router.replace("/(admin)");
       },
     });
   };
 
   const confirmDelete = () => {
-    Alert.alert('Confirm', 'Are you sure you want to delete this product', [
+    Alert.alert("Confirm", "Are you sure you want to delete this product", [
       {
-        text: 'Cancel',
+        text: "Cancel",
       },
       {
-        text: 'Delete',
-        style: 'destructive',
+        text: "Delete",
+        style: "destructive",
         onPress: onDelete,
       },
     ]);
   };
 
   const uploadImage = async () => {
-    if (!image?.startsWith('file://')) {
+    if (!image?.startsWith("file://")) {
       return;
     }
 
     const base64 = await FileSystem.readAsStringAsync(image, {
-      encoding: 'base64',
+      encoding: "base64",
     });
     const filePath = `${randomUUID()}.png`;
-    const contentType = 'image/png';
+    const contentType = "image/png";
 
     const { data, error } = await supabase.storage
-      .from('product-images')
+      .from("product-images")
       .upload(filePath, decode(base64), { contentType });
 
     console.log(error);
@@ -173,13 +173,22 @@ const CreateProductScreen = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen
-        options={{ title: isUpdating ? 'Update Product' : 'Create Product' }}
+        options={{ title: isUpdating ? "Update Product" : "Create Product" }}
       />
+      {isUpdating && !image && (
+        <RemoteImage
+          path={updatingProduct?.image}
+          fallback={defaultPizzaImage}
+          style={styles.image}
+        />
+      )}
+      {image && (
+        <Image
+          source={{ uri: image || updatingProduct?.image || defaultPizzaImage }}
+          style={styles.image}
+        />
+      )}
 
-      <Image
-        source={{ uri: image || defaultPizzaImage }}
-        style={styles.image}
-      />
       <Text onPress={pickImage} style={styles.textButton}>
         Select Image
       </Text>
@@ -201,8 +210,8 @@ const CreateProductScreen = () => {
         keyboardType="numeric"
       />
 
-      <Text style={{ color: 'red' }}>{errors}</Text>
-      <Button onPress={onSubmit} text={isUpdating ? 'Update' : 'Create'} />
+      <Text style={{ color: "red" }}>{errors}</Text>
+      <Button onPress={onSubmit} text={isUpdating ? "Update" : "Create"} />
       {isUpdating && (
         <Text onPress={confirmDelete} style={styles.textButton}>
           Delete
@@ -216,30 +225,30 @@ export default CreateProductScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 10,
   },
   image: {
-    width: '50%',
+    width: "50%",
     aspectRatio: 1,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   textButton: {
-    alignSelf: 'center',
-    fontWeight: 'bold',
+    alignSelf: "center",
+    fontWeight: "bold",
     color: Colors.light.tint,
     marginVertical: 10,
   },
 
   input: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 5,
     marginTop: 5,
     marginBottom: 20,
   },
   label: {
-    color: 'gray',
+    color: "gray",
     fontSize: 16,
   },
 });

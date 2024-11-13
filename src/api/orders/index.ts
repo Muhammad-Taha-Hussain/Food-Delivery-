@@ -3,11 +3,11 @@ import { useAuth } from '@/providers/AuthProvider';
 import { InsertTables, Tables, UpdateTables } from '@/types';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 
-export const useadminOrderList = ({ archeived = false }) => {
-  const statuses = archeived ? ['Delivered'] : ['New', 'Cooking', 'Delivering'];
+export const useadminOrderList = ({ archieved = false }) => {
+  const statuses = archieved ? ['Delivered'] : ['New', 'Cooking', 'Delivering'];
 
   return useQuery({
-    queryKey: ['orders', { archeived }],
+    queryKey: ['orders', { archieved }],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('orders')

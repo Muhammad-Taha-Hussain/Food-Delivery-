@@ -8,7 +8,7 @@ import { useadminOrderList } from '@/api/orders'
 
 const OrderScreen = () => {
 
-  const {data: orders, isLoading, error} = useadminOrderList({archeived: true});
+  const {data: orders, isLoading, error} = useadminOrderList({archieved: true});
   
 
   if(isLoading) {
