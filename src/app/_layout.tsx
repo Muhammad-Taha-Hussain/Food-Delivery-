@@ -11,7 +11,7 @@ import { useColorScheme } from 'react-native';
 import CartProvider from '@/providers/CartProvider';
 import AuthProvider from '@/providers/AuthProvider';
 import QueryProvider from '@/providers/QueryProvider';
-// import { StripeProvider } from '@stripe/stripe-react-native';
+import { StripeProvider } from '@stripe/stripe-react-native';
 // import NotificationProvider from '@/providers/NotificationProvider';
 
 export {
@@ -56,9 +56,9 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      {/* <StripeProvider
+      <StripeProvider
         publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''}
-      > */}
+      >
         <AuthProvider>
           <QueryProvider>
             {/* <NotificationProvider> */}
@@ -85,7 +85,7 @@ function RootLayoutNav() {
             {/* </NotificationProvider> */}
           </QueryProvider>
         </AuthProvider>
-      {/* // </StripeProvider> */}
+      </StripeProvider>
     </ThemeProvider>
   );
 }
