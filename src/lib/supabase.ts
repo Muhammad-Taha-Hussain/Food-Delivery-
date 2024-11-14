@@ -1,6 +1,6 @@
-import "react-native-url-polyfill/auto";
-import * as SecureStore from "expo-secure-store";
-import { createClient } from "@supabase/supabase-js";
+import 'react-native-url-polyfill/auto';
+import * as SecureStore from 'expo-secure-store';
+import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/database.types';
 
 const ExpoSecureStoreAdapter = {
@@ -15,10 +15,10 @@ const ExpoSecureStoreAdapter = {
   },
 };
 
-const supabaseUrl = "https://madgubgrgtibudchemol.supabase.co";
-const supabaseAnonKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hZGd1YmdyZ3RpYnVkY2hlbW9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkyMzgyMDQsImV4cCI6MjA0NDgxNDIwNH0.iObsoCnNodjFmds6eFJL1i5XVVD8u5YoiNF_hs8FlhI";
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASEURL || 'http://10.0.2.2:54323'; // Fallback to local URL
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASEANON || '';
 
+console.log(supabaseUrl, supabaseAnonKey);
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {

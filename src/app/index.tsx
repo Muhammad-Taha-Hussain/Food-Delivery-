@@ -15,6 +15,8 @@ const index = () => {
   if (!session) {
     return <Redirect href={'/sign-in'} />;
   }
+  console.log(isAdmin);
+  
 
   if (!isAdmin) {
     return <Redirect href={'/(user)'} />;

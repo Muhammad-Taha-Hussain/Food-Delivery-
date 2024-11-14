@@ -29,7 +29,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
   const fetchSession = async () => {
     const {
-      data: { session },
+      data: { session }
     } = await supabase.auth.getSession();
 
     setSession(session);
@@ -43,6 +43,8 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         .single();
       setProfile(data || null);
     }
+    console.log(session);
+    
 
     setLoading(false);
   };
