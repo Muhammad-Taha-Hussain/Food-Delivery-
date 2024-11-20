@@ -33,6 +33,8 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     } = await supabase.auth.getSession();
 
     setSession(session);
+    console.log(session);
+    
 
     if (session) {
       // fetch profile
@@ -43,7 +45,6 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         .single();
       setProfile(data || null);
     }
-    console.log(session);
     
 
     setLoading(false);

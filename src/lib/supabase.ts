@@ -15,7 +15,7 @@ const ExpoSecureStoreAdapter = {
   },
 };
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASEURL || 'http://10.0.2.2:54323'; // Fallback to local URL
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASEURL || 'http://10.0.2.2:54321';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASEANON || '';
 
 console.log(supabaseUrl, supabaseAnonKey);

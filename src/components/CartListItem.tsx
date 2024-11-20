@@ -1,20 +1,18 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import React from "react";
-import Colors from "../constants/Colors";
-import { CartItem } from "../types";
-import { FontAwesome } from "@expo/vector-icons";
-import { useCart } from "../providers/CartProvider";
-import RemoteImage from "./RemoteImage";
-import { defaultPizzaImage } from "./ProductListItem";
-// import { defaultPizzaImage } from './ProductListItem';
-// import RemoteImage from './RemoteImage';
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import React from 'react';
+import Colors from '../constants/Colors';
+import { CartItem } from '../types';
+import { FontAwesome } from '@expo/vector-icons';
+import { useCart } from '../providers/CartProvider';
+import { defaultPizzaImage } from './ProductListItem';
+import RemoteImage from './RemoteImage';
 
 type CartListItemProps = {
   cartItem: CartItem;
 };
 
 const CartListItem = ({ cartItem }: CartListItemProps) => {
-  const { updateQantity } = useCart();
+  const { updateQuantity } = useCart();
 
   return (
     <View style={styles.container}>
@@ -34,17 +32,17 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
       </View>
       <View style={styles.quantitySelector}>
         <FontAwesome
-          onPress={() => updateQantity(cartItem.id, -1)}
+          onPress={() => updateQuantity(cartItem.id, -1)}
           name="minus"
-          color="red"
+          color="gray"
           style={{ padding: 5 }}
         />
 
         <Text style={styles.quantity}>{cartItem.quantity}</Text>
         <FontAwesome
-          onPress={() => updateQantity(cartItem.id, 1)}
+          onPress={() => updateQuantity(cartItem.id, 1)}
           name="plus"
-          color="green"
+          color="gray"
           style={{ padding: 5 }}
         />
       </View>
@@ -54,41 +52,41 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     padding: 5,
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   image: {
     width: 75,
     aspectRatio: 1,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginRight: 10,
   },
   title: {
-    fontWeight: "500",
+    fontWeight: '500',
     fontSize: 16,
     marginBottom: 5,
   },
   subtitleContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 5,
   },
   quantitySelector: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 10,
-    alignItems: "center",
+    alignItems: 'center',
     marginVertical: 10,
   },
   quantity: {
-    fontWeight: "500",
+    fontWeight: '500',
     fontSize: 18,
   },
   price: {
     color: Colors.light.tint,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });
 

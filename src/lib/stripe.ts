@@ -26,12 +26,12 @@ export const initialisePaymentSheet = async (amount: number) => {
   if (!paymentIntent || !publishableKey) return;
 
   const result = await initPaymentSheet({
-    merchantDisplayName: 'notJust.dev',
+    merchantDisplayName: 'Taha Hussain',
     paymentIntentClientSecret: paymentIntent,
     customerId: customer,
     customerEphemeralKeySecret: ephemeralKey,
     defaultBillingDetails: {
-      name: 'Jane Doe',
+      name: 'Default Name',
     },
   });
   console.log(result);

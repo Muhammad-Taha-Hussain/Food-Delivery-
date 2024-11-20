@@ -12,7 +12,7 @@ import CartProvider from '@/providers/CartProvider';
 import AuthProvider from '@/providers/AuthProvider';
 import QueryProvider from '@/providers/QueryProvider';
 import { StripeProvider } from '@stripe/stripe-react-native';
-// import NotificationProvider from '@/providers/NotificationProvider';
+import NotificationProvider from '@/providers/NotificationProvider'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -61,7 +61,7 @@ function RootLayoutNav() {
       >
         <AuthProvider>
           <QueryProvider>
-            {/* <NotificationProvider> */}
+            <NotificationProvider>
               <CartProvider>
                 <Stack>
                   <Stack.Screen
@@ -82,7 +82,7 @@ function RootLayoutNav() {
                   />
                 </Stack>
               </CartProvider>
-            {/* </NotificationProvider> */}
+            </NotificationProvider>
           </QueryProvider>
         </AuthProvider>
       </StripeProvider>
